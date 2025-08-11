@@ -16,7 +16,8 @@ return new class extends Migration
             $table->text('product_name');
             $table->bigInteger('price')->default(0);
             $table->text('category');
-            $table->unsignedBigInteger('availability')->default(0);
+            $table->unsignedBigInteger('qty')->default(0);
+            $table->tinyInteger('availability')->default(0);
             $table->timestamps();
         });
     }

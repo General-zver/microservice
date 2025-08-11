@@ -21,10 +21,11 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_name' => "product ".Str::lower(Str::random(5)),
-            'price' => rand(100,999),
-            'category' => Str::lower(Str::random(5)),
-            'availability' => rand(0,1000),
+            'product_name'  => "product ".Str::lower(Str::random(5)),
+            'price'         => rand(100,999),
+            'category'      => Str::lower(Str::random(5)),
+            'qty'           => rand(0,999),
+            'availability'  => rand(0,1),
         ];
     }
 }
