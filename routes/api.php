@@ -18,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/create', [ProductsController::class, 'create']);
-Route::put('/update/{id}', [ProductsController::class, 'updateProduct']);
 
 Route::prefix('products')->group(function() {
     Route::get('/', [ProductsController::class, 'getProducts']);
+    Route::put('/create', [ProductsController::class, 'createProduct']);
+    Route::patch('/update/{id}', [ProductsController::class, 'updateProduct']);
     Route::get('/category/{product:category}', [ProductsController::class, 'getProductsByCategory']);
 });

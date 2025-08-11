@@ -4,10 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
-    public function createProduct() {
+    public function createProduct(Request $request) {
+        $data = $request->all();
+        DB::beginTransaction();
+        try {
+            Product::create($data);
+            DB::commit();
+            return response([
+                'result' => 'success',
+                'message'=> "Product {$data['product_name']} successfully created!"
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response([
+                'result' => 'error',
+                'reason' => $th->getMessage(),
+            ],400);
+        }
 
     }
 
