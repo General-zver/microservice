@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('products')->group(function() {
     Route::get('/', [ProductsController::class, 'getProducts']);
-    Route::put('/create', [ProductsController::class, 'createProduct']);
-    Route::patch('/update/{id}', [ProductsController::class, 'updateProduct']);
+    Route::put('create', [ProductsController::class, 'createProduct']);
+    Route::prefix('/{product}')->group(function() {
+        Route::patch('/update', [ProductsController::class, 'updateProduct']);
+        Route::delete('/delete', [ProductsController::class, 'deleteProduct']);
+    });
     Route::get('/category/{product:category}', [ProductsController::class, 'getProductsByCategory']);
+});
+Route::fallback(function(){
+    return response()->json(['message' => '<your message>'], 404);
 });

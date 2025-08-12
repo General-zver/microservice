@@ -17,4 +17,8 @@ class Product extends Model
         'availability',
     ];
 
+    protected $attributes = [
+        'availability' => '0'
+    ];
+
 }
