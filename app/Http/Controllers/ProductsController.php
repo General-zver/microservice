@@ -30,14 +30,21 @@ class ProductsController extends Controller
 
     }
 
-    public function updateProduct(Product $product, UpdateProductRequest $request) {
+    public function updateProduct($product, UpdateProductRequest $request) {
 
         try {
+            $product_entity = Product::find($product);
+            if (!$product_entity instanceof Product) {
+                return response([
+                    'result' => 'error',
+                    'reason' => 'Product not found.',
+                ],404);
+            }
             DB::beginTransaction();
-            Product::update($request->all());
+            $product_entity->update($request->all());
             return response([
                 'result' => 'success',
-                'message'=> "Product {$product->product_name} successfully updated!"
+                'message'=> "Product {$product_entity->product_name} successfully updated!"
             ]);
             DB::commit();
         } catch (\Throwable $th) {
@@ -45,11 +52,11 @@ class ProductsController extends Controller
             return response([
                 'result' => 'error',
                 'reason' => $th->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
-    public function deleteProduct($product, Request $request) {
+    public function deleteProduct($product) {
         $product_entity = Product::find($product);
         if ($product_entity instanceof Product) {
             $product_entity->delete();
@@ -83,11 +90,6 @@ class ProductsController extends Controller
         return response()->json([
             'products' => $products
         ],200);
-        //   :withHeaders([
-        //          'X-Custom-Header' => 'MyValue',
-        //          'Authorization' => 'Bearer ' . $yourToken,
-        //          'Content-Type' => 'application/json',
-        //   ])
     }
 
     public function getProductsByCategory(Product $product) {

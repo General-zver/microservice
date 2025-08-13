@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -16,11 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
+}); */
 
-Route::prefix('products')->group(function() {
+Route::post('connect', [AuthController::class, 'connect']);
+
+Route::prefix('products')->middleware('auth.token')->group(function() {
     Route::get('/', [ProductsController::class, 'getProducts']);
     Route::put('create', [ProductsController::class, 'createProduct']);
     Route::prefix('/{product}')->group(function() {
@@ -30,5 +33,5 @@ Route::prefix('products')->group(function() {
     Route::get('/category/{product:category}', [ProductsController::class, 'getProductsByCategory']);
 });
 Route::fallback(function(){
-    return response()->json(['message' => '<your message>'], 404);
+    return response()->json(['message' => 'The requested resource does not exist or is not accessible.'], 404);
 });

@@ -25,13 +25,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e, Request $request) {
-            if ($request->is('api/*') || $request->expectsJson()) {
-                return new JsonResponse([
-                    'message' => $e->getMessage(),
-                    'status' => $e->getCode() ?: 500, // Or customize status based on exception type
-                ], $e->getCode() ?: 500);
-            }
+        $this->reportable(function (Throwable $e) {
+            //
         });
     }
 }

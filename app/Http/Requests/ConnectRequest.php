@@ -6,8 +6,9 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ProductRequest extends FormRequest
+class ConnectRequest extends FormRequest
 {
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -16,11 +17,8 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_name'  => 'required|alpha_dash:ascii',
-            'price'         => 'required|numeric|min:0',
-            'category'      => 'required|alpha_dash:ascii',
-            'qty'           => 'required|numeric|min:0',
-            'availability'  => 'boolean',
+            'email'     => 'required|email',
+            'password'  =>  'required|string'
         ];
     }
 
